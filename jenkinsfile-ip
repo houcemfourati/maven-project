@@ -1,0 +1,52 @@
+pipeline{
+agent any
+
+parameters{
+string(name: 'tomcat_dev_ip',
+defaultValue: 'http://192.168.43.68:8080',
+description:'Staging Server : 8080')
+string(name:'tomcat_prod_ip',
+defaultValue:'http://192.168.43.68:9090',
+description: 'Production Server : 9090)
+}
+
+triggers {
+pollSCM('* * * * *')
+}
+
+stages{
+	stage('Build'){
+	steps{
+	bat 'mvn clean package'
+	}
+	post{
+	success{
+	echo "Now Archiving ...."
+	archiveArtifacts artifacts: '**/target/*.war'
+	}
+	}
+	}
+	
+	stage('Deployments'){
+	parallel {
+	stage ('Deploy to Staging){
+	steps {
+  deploy adapters: [tomcat8(credentialsId: '35a73731-cf79-4163-ac7c-e61cb72236ee', 
+  path: '', url: "${params.tomcat_dev_ip}")], contextPath: null, onFailure:false,war: '**/*.war'
+  }
+	}
+  
+  stage ('Deploy to Production'){
+	steps {
+  deploy adapters: [tomcat8(credentialsId: '35a73731-cf79-4163-ac7c-e61cb72236ee', 
+  path: '', url: "${params.tomcat_prod_ip}")], contextPath: null, onFailure:false,war: '**/*.war'
+  }
+	}
+  
+  
+  
+  }}}
+	
+	
+	
+}

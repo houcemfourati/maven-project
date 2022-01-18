@@ -3,7 +3,7 @@ agent any
 
 parameters{
 string(name: 'tomcat_dev_ip',
-defaultValue: 'http://localhost:8080',
+defaultValue: 'http://localhost:8090',
 description:'Staging Server : 8080')
 string(name:'tomcat_prod_ip',
 defaultValue:'http://localhost:9090',

@@ -7,7 +7,7 @@ defaultValue: 'http://192.168.43.68:8080',
 description:'Staging Server : 8080')
 string(name:'tomcat_prod_ip',
 defaultValue:'http://192.168.43.68:9090',
-description: 'Production Server : 9090)
+description: 'Production Server : 9090')
 }
 
 triggers {
